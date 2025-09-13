@@ -1,0 +1,45 @@
+dated: 13 sept
+
+http server can talk to other server and also devices. 
+
+Request Response model: it is a fundamental communication pattern. It says how cleint and server/ or two server exchange data in between.
+
+Other ways of communication b/w s&s and s&c: 
+    1. Websockets
+    2.WebRTC
+    3.GRpc etc..
+
+Domain Name/IP: every domain under the hood reach to a IP, IP is a way to find the serever(ip is the address of that)
+
+TO find a sites ip: 
+in bash write "ping site_name"
+--> ping google.com
+--> PING google.com(142.250.182.46): 56 data bytes
+-->here we got a lot of diffrente ips as google has diffrent servers for each locations 
+
+Ports :
+A logical end points to identify the very specific server, so on the same domain we can host diifrenet things on diffrent port
+We see it in .vercels.app 
+
+Methods :
+CRUD 
+while hitting a server what we want to do is let know by the telling the requeset method 
+--> the very first req that hits to the browser is the GET req: as we get html from the server
+--> We send the req in the headers of the request 
+--> Type of methods: 
+        1. GET -  Retrieve data from a server. (Get my TODOS)
+        2. POST - Submit data to be processed by a server. (Create a TODO)
+        3. PUT - Update or create a resource on the server (Update my todo)
+        4. DELETE - Remove a resource from the server. (Delete my todo)
+
+Response: 
+the req response sending to me by the server in a HTML, JSON type it is a very big JS object.
+
+Status Code: Tells about the status of the req 
+--> 200: succes
+--> it is the first thing that we check if the stauts is good then we check the body, if 400 error means cleint side error, and etc.
+--> [BAD Prat]Paytm used o show status code 200 for every thing then, tell the error in the body 
+
+BODY:
+when ever we want to send req wiht some data like update:to-do so we send the data in the BODY 
+---> { description: my data, etc....}
