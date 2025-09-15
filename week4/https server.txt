@@ -20,6 +20,11 @@ in bash write "ping site_name"
 Ports :
 A logical end points to identify the very specific server, so on the same domain we can host diifrenet things on diffrent port
 We see it in .vercels.app 
+Default port: there are few default ports that used in the by browser to make req to the server, in most cases untile we explixitly search for a port on the server, it will take the default ports, thats why we used to put stuff on default ports while hosting our sites on the setrver 
+HTTP => 80
+HTTPS => 443
+SSH  => 22 (secure shell-> help to run cmd commands on the server AWS mechines,while http, https are using to chat to browser)
+ftp => 21
 
 Methods :
 CRUD 
@@ -42,4 +47,23 @@ Status Code: Tells about the status of the req
 
 BODY:
 when ever we want to send req wiht some data like update:to-do so we send the data in the BODY 
----> { description: my data, etc....}   
+---> { description: my data, etc....}  
+
+EXPRESS BOILER TEMP : 
+// create app out of expres u cant just use express variable
+const express = require('express')
+const app = express()
+
+//routes: Define alll the routes then 
+app.get('/', (req, res) => {
+  //req got all of the things in the a req: So whenever some user id, user details were send in the req wwe can get it in the body
+  res.send('Hello World')
+
+  //whatever I send a response it gies to the client and we cna send it twice in a signle req. 
+})
+
+app.get('/asd', (req, res) => {
+  res.send('From ASD')
+})
+
+app.listen(3000)  // which ports where u want to listen to 
