@@ -1,0 +1,7 @@
+15th sept 
+
+Query Parameter: 
+A method to get the params in the route as Query 
+eg: http://localhost:3003/?n=50
+after ?we give the query,
+this can be recieved in req.query.n
