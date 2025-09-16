@@ -59,6 +59,7 @@ app.put("/", function(req,res) {
 
 //4.User Can delete all their unhealthy kidneys
 app.delete("/", function(req, res) {
+
     const newKidneys = [];
     for (let i=0; i<= users[0].kidneys; i++) {
        if (users[0].kidneys[i].healthy){
