@@ -119,3 +119,14 @@
         1. Smart contract (or program) - Usually written in Rust on Solana
         2. Client - A typescript library that you can create that makes it easy to interact with the contract
         3. Frontend (in React/NextJS) that lets your users interact with your contract.
+    - If we store all the code on chain then will it will ever fill up? 
+    Yes, may be, but not now at all, as to put some data on chain, we also need to put some sol for that, as sol is limite,d hence the data is also limited.
+- Wallet Extension
+    - This will help us to connect to the DApps,
+    - Why it is a extn. not website?
+        
+        We don’t want to give our private key to the Dapps cuzz u never know
+        
+        And extensions can interact and change the content of the web-app, like darkmode-ext., so we use an extension where we save the Private key 
+        
+    - It means that the extension will step in place of the individual, but it won’t send ur key to the website.
