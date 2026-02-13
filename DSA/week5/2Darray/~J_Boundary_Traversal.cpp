@@ -18,7 +18,10 @@ int main(){
   }
   else if(m==1){
     long long arr[n][m];
-    for (int i=0; i<m; i++){
+    for(int i=0; i<n; i++){
+      cin >> arr[i][0];
+    }
+    for (int i=0; i<n; i++){
       cout << arr[i][0] << " ";
     }
   }
@@ -32,11 +35,11 @@ int main(){
 
     //top row
     for (int i=0; i<n; i++){
-      cout << arr[0][i] << " ";
+      cout << arr[i][0] << " ";
     }
 
     //right column
-    for (int j=1; j<m; j++){
+    for (int j=1; j<n; j++){
       cout << arr[j][m-1] << " ";
     }
 
