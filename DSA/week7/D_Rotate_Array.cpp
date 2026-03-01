@@ -1,8 +1,8 @@
 #include <iostream>
 using namespace std;
 
-void rotate(int len, int index, int arr[]) {
-  for(int i=index; i<len; i++){
+void rotate(long long len, int index, int arr[]) {
+  for(long long i=index; i<len; i++){
     cout << arr[i] << " ";
     if (i == len-1){
       for(int j=0; j < index; j++){
@@ -14,14 +14,15 @@ void rotate(int len, int index, int arr[]) {
 }
 
 int main(){
-  int num, len, index=0;
+  int num, index=0;
   cin >> num;
 
   while (num){
+    long long len;
     cin >> len;
     int arr[len];
 
-    for (int i=0; i<len; i++){
+    for (long long  i=0; i<len; i++){
       cin >> arr[i];
     }
     cin >> index;
