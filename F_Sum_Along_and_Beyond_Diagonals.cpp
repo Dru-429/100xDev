@@ -28,4 +28,4 @@ int main(){
 
   cout << daigSum << " " << nonSum << endl;
   return 0;
-}
+} 
