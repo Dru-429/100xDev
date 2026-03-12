@@ -24,6 +24,7 @@ public:
                 }
                 if (count >=2){
                     return true;
+                    break;
                 }
             }
         }
