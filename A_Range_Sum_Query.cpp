@@ -23,7 +23,7 @@ int main() {
     cin >> l >> r;
     l--;
     r--;
-    long long sum = prefArr[r] - (l > 0 ? prefArr[l-1] : 0);
+    long long sum = prefArr[r] - (l > 0 ? prefArr[l] : 0);
     cout << sum << endl;
   }
 
