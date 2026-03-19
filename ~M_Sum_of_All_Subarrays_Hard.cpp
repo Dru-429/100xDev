@@ -12,7 +12,8 @@ int main() {
 
   long long sum = 0;
   for (int i =0; i< len; i++){
-    int occ = (len-i) + (len-i)*i;
+    // int occ = (len-i) + (len-i)*i;
+    long long occ = (long long)(len-i) * (i+1);
     sum += arr[i] * occ;
   }
   cout << sum << endl;
