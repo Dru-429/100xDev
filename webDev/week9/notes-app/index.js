@@ -15,15 +15,7 @@ app.post('/notes', (req, res) => {
     message: "done"
   });
 });
-
-//POST for sign in
-app.post("/signup", (req, res)=> {
-  const username = req.body.username;
-  const password = req.body.password;
-  const useExists = users.find (user => user.username === username);
-  
-})
-
+ 
 
 //GET for fetching all notes
 app.get('/notes', (req, res) =>{
@@ -34,7 +26,7 @@ app.get('/notes', (req, res) =>{
 
 //GET for frontend 
 app.get('/', (req, res) => {
-  res.sendFile("index.html", {root: __dirname});
+  res.sendFile("C:/Users/RANIYA SAHOO/OneDrive/Deskop/dru.env/100xDev/webDev/week9/notes-app/frotnend/index.html");
 })
 
 app.listen(3000)

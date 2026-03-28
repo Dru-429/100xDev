@@ -6,7 +6,7 @@ int main()
   int len;
   cin >> len;
   long long arr[len];
-  int count = 1, countMax = 0;
+  int count = 1, countMax = 1;
 
   for (int i = 0; i < len; i++)
   {
@@ -28,7 +28,7 @@ int main()
       count = 1;
     }
     
-    if (count >= countMax){
+    if (count > countMax){
       countMax = count;
     }
   }
