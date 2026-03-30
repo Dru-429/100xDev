@@ -4,6 +4,7 @@ const express = require('express')
 
 const app = express();
 
+app.use(express.json)
 
 //One req ko only send one res., to send more to one req we use envent stream that what chatgpt uses 
 //Query param: http://localhost:3000/sum?a=1&b=2
@@ -24,15 +25,16 @@ app.get("/sum/:a/:b", function(req, res) {
 
   const sum = a + b;
    
-  // res.json ({
-  //   ans: sum
-  // })
-  res.send(sum.toString());
+  res.json ({
+    ans: sum
+  })
+
 });
 
-app.get("/mul/:a/:b", function(req, res) {
-  const a = parseInt(req.params.a); //string
-  const b = parseInt(req.params.b); //string so '1'  
+//POST
+app.post("/mul", function(req, res) {
+  const a = parseInt(req.body.a); //string
+  const b = parseInt(req.body.b); //string so '1'  
 
   const sum = a * b;
   res.send(sum.toString());
