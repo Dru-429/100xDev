@@ -2,9 +2,9 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
-  <body>
+  <body style="background-color: black;">
     <div
-      style="display: flex; justify-content: space-between; padding: 0px 100px"
+      style="display: flex; justify-content: space-between; padding: 0px 100px; color: white;"
     >
       <div id="notes">Loading...</div>
 
@@ -25,7 +25,7 @@
         newNode.innerHTML = document.getElementById("userNote").value;
         newNode.setAttribute(
           "style",
-          "border: 2px solid black; padding: 10px;",
+          "border: 2px solid yellow; padding: 10px;",
         );
         document.getElementById("notes").appendChild(newNode);
 
@@ -44,7 +44,7 @@
           noteNote.innerHTML = notes[i];
           noteNote.setAttribute(
             "style",
-            "border: 2px solid black; padding: 10px;",
+            "border: 2px solid yellow; padding: 10px; margin: 10px",
           );
           document.getElementById("notes").appendChild(noteNote);
         }
