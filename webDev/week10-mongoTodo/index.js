@@ -1,37 +1,43 @@
 const express = require('express');
 const { authMiddleware } = require('./middleware');
 const jwt = require('jsonwebtoken');
-
-let USERS = [];
-let TODOS = [];
-let currentUserId = 1;
+const { userModel, todoModel } = require('./models');
 
 const app = express();
 app.use(express.json());
 
-app.post('/signup', (req, res) => {
+app.post('/signup', async (req, res) => {
   const { username, password } = req.body;
   
-  const existingUser = USERS.find(u => u.username === username);
+  const existingUser = await userModel.findOne({
+    username: username,
+    password: password,
+  });
+
   if(existingUser){
     res.status(403).json({
       message: "User already exists"
     })
     return;
   }
-  USERS.push({
-    userId: currentUserId++,
+  const newUser = await userModel.create({
     username: username,
     password: password,
   })
 
+  res.json({
+    id: newUser._id
+  })
 })
 
-app.post('/signin', (req, res) => {
+app.post('/signin', async (req, res) => {
   const username = res.body.username;
   const password = req.body.password;
 
-  const userExits = USERS.find( u => u.username === username && username.password == password);
+  const userExits = await userModel.findOne({
+    username: username,
+    password: password,
+  })
 
   if(!userExits){
     res.status(403).json({
