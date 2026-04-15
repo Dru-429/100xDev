@@ -52,7 +52,6 @@ app.post('/signin', async (req, res) => {
   res.send({
     token
   })
-
 })
 
 app.post('/todo', authMiddleware, (req, res) => {
