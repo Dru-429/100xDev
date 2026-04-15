@@ -59,28 +59,67 @@ app.post('/signin', async (req, res) => {
 })
 
 //psot todos to the db
-app.post('/todo', authmiddleware,  (req, res) => {
+app.post('/todo', authmiddleware, async (req, res) => {
   const title = req.body.title;
   const description = req.body.description;
   const userId = req.userId;
 
-  
+  const newTodo = await todoModel.create({
+    "userId": userId,
+    "title" : title,
+    "description": description,
+    "doen": false
+  })
 
+  res.send({ 
+    message: "todo list updated",
+    id: newTodo._id
+  })
 })
 
 //get all todods
-app.get('/todo', authmiddleware, (req, res) => {
+app.get('/todo', authmiddleware, async (req, res) => {
+  const userId = req.userId;
+  
+  const todos = await todoModel.find({
+    userId: userId
+  })
 
+  res.json({
+    todos: todos,
+  })
 })
 
 //done
-app.post("/todo/:todoId", authmiddleware, (req, res) => {
+app.post("/todo/:todoId", authmiddleware, async (req, res) => {
+  const userId = req.userId;
+  const todoId = req.params.todoId;
 
+  await todoModel.updateOne({
+    _id: todoId,
+    userId: userId
+  }, {
+    done: true
+  })
+
+  res.json({
+    message: "Updated succesfully"
+  })    
 })
 
 //delete todo
-app.delete("/todo/:todoId", authmiddleware, (req, res)=> {
+app.delete("/todo/:todoId", authmiddleware, async (req, res)=> {
+  const userId = req.userId;
+  const todoId = req.params.todoId
 
+  await todoModel.delete({
+    _id: todoId,
+    "userId": userId
+  })
+
+  res.json({
+    message: "todo deleted succesfully "
+  })
 })
 
 
