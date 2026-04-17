@@ -68,7 +68,7 @@ app.post('/todo', authmiddleware, async (req, res) => {
     "userId": userId,
     "title" : title,
     "description": description,
-    "doen": false
+    "done": false
   })
 
   res.send({ 

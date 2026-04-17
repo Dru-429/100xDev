@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 function authmiddleware (req, res, next) {
   const token = req.headers.token;
   const decoded = jwt.verify(token, "secret123123");
-  const user = parseInt(decoded.userId)
+  const user = decoded.userId;
 
   if(user){
     req.userId = user;
@@ -16,6 +16,6 @@ function authmiddleware (req, res, next) {
   }
 }
 
-module.exports = ({
+module.exports = {
   authmiddleware: authmiddleware,
-})
+}

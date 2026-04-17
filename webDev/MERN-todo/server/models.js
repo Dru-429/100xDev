@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const url = process.env.MONGOOSE_URL;
 
-mongoose.connect(MongooseU)
+mongoose.connect(url)
 
 const userSchema = mongoose.Schema({
   "username": String,
@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
 const todoSchema = mongoose.Schema({
   "title": String,
   "description": String,
-  "done": false,
+  "done": {type: Boolean, default: false},
   "userId": mongoose.Types.ObjectId
 })
 
