@@ -1,140 +1,202 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const { authMiddleware } = require("./middleware")
+
+let USERS_ID = 1;
+let ORGANIZATION_ID = 1;
+let BOARD_ID = 1;
+let ISSUES_ID = 1;
+
+const USERS = [];
+
+const ORGANIZATIONS = [];
+
+const BOARDS = [];
+
+const ISSUES = [];
 
 const app = express();
+app.use(express.json());
 
-app.use(express.json())
-
-const USER_ID = 1;
-const ORG_ID = 1;
-const BOARD_ID = 1;
-const IISUE_ID = 1;
-
-
-//  DB structure
-const USERS = [];
-const ORGS = [{
-  id: 1,
-  title: "100xDevs",
-  description: "Coding learning paltform",
-  admin: 1,
-  members: [2],
-}, {
-  id: 2,
-  title: "Kirats org",
-  description: "CLI to post about on X",
-  admin: 2,
-  members: [],
-}];
-const BOARDS = [{
-  id: 1,
-  title: "100XDevs frontend",
-  organizaation: 1,
-}];
-const ISSUES = [{
-  id: 1,
-  title: "Add dark mode",
-  boardid: 1, 
-  state: "NEXT_UP"
-}, {
-  id: 2,
-  title: "Allow admain to create more courses",
-  boardid: 1,
-  state: "IN_PROGRESS"
-}];
-
-//sign up
-app.post("/signup", (req, res)=>{
-  const { username, password } = req.body;
-  
-  const userExits =USERS.find( u => u.username === username );
-
-  if(userExits){
-    res.status(403).json({
-      message: "User Already exits"
-    })
-  }
-
-  USERS.pushK({
-    username, 
-    password, 
-    id: USER_ID++
-  })
-
-  res.json({
-    message: "User added"
-  })
-
-})
-
-//signin
+// CREATE
 app.post("/signup", (req, res) => {
-  const { username, password } = req.body;
+    const username = req.body.username;
+    const password = req.body.password;
 
-  const userExits = USERS.find(u => u.username === username && u.password === password);
+    const userExists = USERS.find(u => u.username === username);
+    if (userExists) {
+        res.status(411).json({
+            message: "User with this username already exists"
+        })
+        return;
+    }
 
-  if(!userExits) {
-    res.status(403).json({
-      message: "Incorrect credentials"
+    USERS.push({
+        username,
+        password,
+        id: USERS_ID++
     })
-
-    //create jwt
-    const token = jwt.sign({
-      userId: userExits.id, 
-    }, "trello123123")
 
     res.json({
-      token
+        message: "You have signed up successfully"
     })
-  }
 
 })
 
-//orgs
-app.post("/organization", (req, res) => {
+app.post("/signin", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
+    const userExists = USERS.find(u => u.username === username && u.password === password);
+    if (!userExists) {
+        res.status(403).json({
+            message: "Incorrect credentials"
+        })
+    }
+
+    const token = jwt.sign({
+        userId: userExists.id
+    }, "trello123123");
+    // create a jwt for the user
+
+    res.json({
+        token
+    })
 })
 
-//adding members to the org 
-app.post("/add-member-to-org", (req, res) => {
+// AUTHENTICATED ROUTE - MIDDLEWARE
+app.post("/organization", authMiddleware, (req, res) => {
+    const userId = req.userId;
+    ORGANIZATIONS.push({
+        id: ORGANIZATION_ID++,
+        title: req.body.title,
+        description: req.body.description,
+        admin: userId,
+        members: []
+    })
 
+    res.json({
+        message: "Org created",
+        id: ORGANIZATION_ID - 1
+    })
 })
 
-//create board 
+app.post("/add-member-to-organization", authMiddleware, (req, res) => {
+    const userId = req.userId;
+    const organizationId = req.body.organizationId;
+    const memerUserUsername = req.body.memerUserUsername;
+
+    const organization = ORGANIZATIONS.find(org => org.id === organizationId);
+
+    if (!organization || organization.admin !== userId) {
+        res.status(411).json({
+            message: "Either this org doesnt exist or you are not an admin of this org"
+        })
+        return
+    }
+
+    const memberUser = USERS.find(u => u.username === memerUserUsername);
+
+    if (!memberUser) {
+        res.status(411).json({
+            message: "No user with this username exists in our db"
+        })
+        return
+    }
+
+    organization.members.push(memberUser.id);
+
+    res.json({
+        message: "New member added!"
+    })
+})
+
 app.post("/board", (req, res) => {
-
+    
 })
 
-//create issue 
 app.post("/issue", (req, res) => {
-
+    
 })
 
-//Reading endpoints 
+//GET endpoints
+app.get("/organization", authMiddleware, (req, res) => {
+    const userId = req.userId;
+    const organizationId = parseInt(req.query.organizationId); // "1"
+
+    const organization = ORGANIZATIONS.find(org => org.id === organizationId);
+
+    console.log(organization);
+    console.log(userId);
+    if (!organization || organization.admin !== userId) {
+        res.status(411).json({
+            message: "Either this org doesnt exist or you are not an admin of this org"
+        })
+        return
+    }
+
+    res.json({
+        organization: {
+            ...organization,
+            members: organization.members.map(memberId => {
+                const user = USERS.find(user => user.id === memberId);
+                return {
+                    id: user.id,
+                    username: user.username
+                }
+            })
+        }
+    })
+})
 
 app.get("/boards", (req, res) => {
 
+    
 })
 
 app.get("/issues", (req, res) => {
-
+    
 })
 
 app.get("/members", (req, res) => {
 
 })
 
-//Move endpoint 
-app.put("/issues/:issueId", (req, res) => {
+
+// UPDATE
+app.put("/issues", (req, res) => {
 
 })
 
-//delete endpoint
-app.delete("/members/:memberId", (req, res) => {
+//DELETE -- FIND THE GBUG and fix it
+app.delete("/members", authMiddleware, (req, res) => {
+    const userId = req.userId;
+    const organizationId = req.body.organizationId;
+    const memerUserUsername = req.body.memberUserUsername;
 
+    const organization = ORGANIZATIONS.find(org => org.id === organizationId);
+
+    if (!organization || organization.admin !== userId) {
+        res.status(411).json({
+            message: "Either this org doesnt exist or you are not an admin of this org"
+        })
+        return
+    }
+
+    const memberUser = USERS.find(u => u.username === memerUserUsername);
+
+    if (!memberUser) {
+        res.status(411).json({
+            message: "No user with this username exists in our db"
+        })
+        return
+    }
+
+    organization.members = organization.members.filter(user => user.id !== memberUser.id);
+
+    res.json({
+        message: "member deleted!"
+    })
 })
 
-
-app.listen("3000", () => {
-  console.log("Server started at port 3000")
-})
+app.listen(3000);
