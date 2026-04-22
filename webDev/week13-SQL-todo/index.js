@@ -3,7 +3,7 @@ const { Pool }  = require("pg");
 const jwt = require("jsonwebtoken")
 
 const pool = new Pool({
-  connectionString: "postgresql://neondb_owner:npg_4kMImde5couG@ep-damp-pine-anq6eyou.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require"
+  connectionString: "postgresql://neondb_owner:THIS IS NOT MY PSWD BETTER DONT TRY@ep-damp-pine-anq6eyou.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require"
 });
 
 const app = express();
@@ -25,7 +25,7 @@ app.post("/signup", async (req, res) => {
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
-    //VERY BAD WAY TO WRITE CUZZ IT CAUSE SQL INJECTION SO USE THE 
+  //VERY BAD WAY TO WRITE CUZZ IT CAUSE SQL INJECTION SO USE THE 
   const response = await pool.query(`SELECT * FROM users WHERE email='${email}' AND password='${password}';`);
   console.log(`SELECT * FROM users WHERE email='${email}' AND password='${password}';`);
   console.log(response);
