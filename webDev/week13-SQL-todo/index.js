@@ -69,12 +69,28 @@ app.post("/todo", authMiddleware, async (req, res) => {
  
 //mark done
 app.put("/todo/:todoId", authMiddleware,async (req, res) => {
+  const userId = parseInt(req.userId);
+  const todoId = parseInt(req.params.todoId);
 
+  const response = await pool.query(' UPDATE todos SET done = TRUE WHERE id = ($1) AND user_id = ($2) RETURNING ID;', [todoId, userId]);
+  console.log(response);
+
+  res.json({
+    message: "Todo marked as done"
+  })
 })
 
 //delete todo
 app.delete("/todo/:todoId", authMiddleware, async (req, res) => {
+  const userId = parseInt(req.userId);
+  const todoId = parseInt(req.params.todoId);
 
+  const response = await pool.query('DELETE FROM todos WHERE id = ($1) AND user_id = ($2) RETURNING ID;', [todoId, userId]);
+  console.log(response);
+
+  res.json({
+    message: "Todo deleted successfully"
+  })
 })
 
 //get all todos
