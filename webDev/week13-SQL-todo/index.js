@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const { authMiddleware } = require("./middelware")
 
 const pool = new Pool({
-  connectionString: "postgresql://neondb_owner:npg_4kMImde5couG@ep-damp-pine-anq6eyou.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require"
+  connectionString: "postgresql://neondb_owner:@ep-damp-pine-anq6eyou.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require"
 });
 
 const app = express();

@@ -2,24 +2,47 @@ const express = require("express");
 const { Pool }  = require("pg");
 const jwt = require("jsonwebtoken")
 const { authMiddleware } = require("./middelware")
+const bcrypt = require("bcrypt")
+const z = require('zod');
 
 const pool = new Pool({
-  connectionString: "postgresql://neondb_owner:npg_4kMImde5couG@ep-damp-pine-anq6eyou.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require"
+  connectionString: "postgresql://neondb_owner:npg_4kMImde5couG@ep-damp-pine-anq6eyou-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 });
 
 const app = express();
 app.use(express.json());
 
+const signupSchema = z.object({
+  username: z.string().min(3),
+  password: z.string().min(6),
+  email: z.email(),
+})
+
 //signup
 app.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
+  // const { username, email, password } = req.body;
+  const { data, success, error} = signupSchema.safeParse(req.body);
 
-  console.log('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [username, email, password]);
-  const response = await pool.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id;', [username, email, password]);
+  if(!success) {
+    res.status(403).json({
+      message: "incourrect inputs",
+      error: JSON.parse(error)
+    })
+    return
+  }
+
+  const username = data.username;
+  const password = data.password;
+  const email = data.email;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  console.log('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [username, email, hashedPassword]);
+  const response = await pool.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id;', [username, email, hashedPassword]);
 
   console.log(response);
   res.json({
-    userId: user.rows[0].id,
+    // userId: users.rows[0].id,
     message: "User added succesfully"
   })
 })
@@ -28,27 +51,33 @@ app.post("/signup", async (req, res) => {
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
-  //VERY BAD WAY TO WRITE CUZZ IT CAUSE SQL INJECTION SO USE THE 
-  // const response = await pool.query(`SELECT * FROM users WHERE email='${email}' AND password='${password}';`);
-  const response = await pool.query('SELECT * FROM users WHERE email = ($1) AND password = ($2);', [email, password])
-  console.log('SELECT * FROM users WHERE email = "($1)" AND password = "($2)";' [email, password] )
+  const response = await pool.query('SELECT * FROM users WHERE email = ($1);', [email])
 
   // console.log(response);
   const userExits = response.rows[0];
 
   if(!userExits) {
-    res.status.json({
+    res.status(403).json({
       message: "Incorrect "
     })
   }
   else{
-    const token = jwt.sign({
-      userId: userExits.id
-    }, "sqltodo123123")
+    const correctPassword = await bcrypt.compare(password, userExits.password)
 
-    res.json({
-      token
-    })
+    if(correctPassword) {
+      const token = jwt.sign({
+        userId: userExits.id
+      }, "sqltodo123123")
+  
+      res.json({
+        token
+      })
+    }
+    else{
+      res.status(403).json({
+        message: "Incorrect cerds"
+      })
+    }
   }
 
 })
