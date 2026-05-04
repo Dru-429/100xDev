@@ -18,7 +18,7 @@ const signupSchema = z.object({
   email: z.email(),
 })
 
-//signup
+//signup  
 app.post("/signup", async (req, res) => {
   // const { username, email, password } = req.body;
   const { data, success, error} = signupSchema.safeParse(req.body);
