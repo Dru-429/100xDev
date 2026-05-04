@@ -9,12 +9,13 @@ function sum(a: number, b: number){
 
 function first_elem(arr: number[]): number | null {
   if( arr.length > 0){
-    return arr[0] ?? null;
+    return arr[0] || null;
   }
+
   return null;
 }
 
-let a = "Dhruv";
+let a = 1;
 let b = 2;
 
 console.log(sum(a,b));
