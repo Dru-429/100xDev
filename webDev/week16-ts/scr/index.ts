@@ -13,6 +13,6 @@ interface SignupInput {
 }
 
 app.post("/signup", (req, res) => {
-  const body: SignupInput = req.body;
+  const body: SignupInput = req.body; 
 
 })
