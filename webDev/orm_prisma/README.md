@@ -1,4 +1,4 @@
-# prisma-orm
+# orm_prisma
 
 To install dependencies:
 
