@@ -1,6 +1,9 @@
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "./generated/prisma/client";
+import express, { Express } from "express";
+
+const app: Express = express();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -12,7 +15,7 @@ const client = new PrismaClient({ adapter });
 async function createUser() {
   const newUser = await client.user.create({
     data: {
-      username: "Dhruv",
+      name: "Dhruv",
       password: "asd123123",
       age: 21,
       city: "Delhi",
@@ -21,4 +24,16 @@ async function createUser() {
   console.log("User created successfully:", newUser);
 }
 
-createUser();
+async function fetchTodos() {
+  const todos = await client.user.findMany({
+    where: {
+      id: 1
+    },
+    include: {
+      todos: true
+    }
+  });
+  console.log("User todo fetched successfully:", todos);
+}
+
+fetchTodos()

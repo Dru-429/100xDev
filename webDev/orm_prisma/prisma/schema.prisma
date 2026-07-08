@@ -13,9 +13,12 @@ datasource db {
 }
 
 model user {
-  id   Int    @id @default(autoincrement())
-  name String
-  city String
+  id       Int    @id @default(autoincrement())
+  name     String
+  password String
+  age      Int
+  city     String
+  todos    todo[]
 }
 
 model todo {
@@ -23,5 +26,6 @@ model todo {
   task        String
   done        Boolean
   description String
-  user        String
+  userId      Int
+  user        user    @relation(fields: [userId], references: [id])
 }
