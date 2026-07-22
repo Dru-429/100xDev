@@ -1,3 +1,4 @@
+import ChatBox from "@/components/ChatBox";
 
 export default function Home() {
   return (
@@ -6,12 +7,8 @@ export default function Home() {
         <div>
           hi
         </div>
-        <div className="relative bottom-10 w-full md:w-[80%]">
-          <input 
-            type="text" 
-            placeholder="Type what u want to ask..."
-            className="w-full "
-          />
+        <div>
+          <ChatBox />
         </div>
       </main>
     </div>
