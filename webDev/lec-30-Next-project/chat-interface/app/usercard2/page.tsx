@@ -1,11 +1,15 @@
-import axios from "axios";
+import axios from "axios"
+
+async function getData() {
+  const resp = await axios.get("https://week-13-offline.kirattechnologies.workers.dev/api/v1/user/details")
+  return resp.data
+}
 
 export default async function usercard2 () {
-  const response = await axios.get("https://week-13-offline.kirattechnologies.workers.dev/api/v1/user/details")
-
+  const data = await getData()
   return(
     <div>
-      {response.data.name}
+      {data.name}
     </div>
   )
  }   
