@@ -1,12 +1,28 @@
+import { prisma } from "@/lib/db";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const prompt = await req.json()
-  
+  const body = await req.json()
+  const db_resp = await prisma.convo.create({
+    data: {
+      initialPrompt: body.initialPrompt
+    }
+  })
 
-  return Response.json({ message: "Post req recived"})
+  await prisma.message.create({
+    data: {
+      convoId: db_resp.id,
+      message: body.initialPrompt, 
+      role: "User"
+    }
+  })
+
+  return Response.json({ message: "New Convo Added", id: db_resp.id})
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const id = req
+
+
   return Response.json({ message: "GET req recived"})
 }

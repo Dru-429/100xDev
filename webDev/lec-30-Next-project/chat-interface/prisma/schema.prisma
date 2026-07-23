@@ -21,6 +21,7 @@ model Convo {
 model Message {
   id      String @id @unique @default(uuid())
   role    Role
+  message String
   convoId String
   convo   Convo  @relation(fields: [convoId], references: [id])
 }
