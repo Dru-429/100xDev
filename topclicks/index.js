@@ -13,7 +13,7 @@ const puppeteer = require('puppeteer');
   await page.goto('https://www.topclick.app/', { waitUntil: 'networkidle2' });
 
   // Selector for the button based on aria-label
-  const buttonSelector = 'button[aria-label="Click for Github wrapped"]';
+  const buttonSelector = 'button[aria-label="Click for Github wrapped"]';   
 
   // Wait until the button is visible on the page
   await page.waitForSelector(buttonSelector);
